@@ -7,5 +7,13 @@ The procedure includes three steps:
 - save gene annotation output in sqlite
 
 ## Step1: coding sequences cleaning, structuring, and  translation
+- workflow:
+
+  <img src="images/step1.png" width=800, height=400></img>
+
+```
+python3 main.py [-h]
+```
+
 ## Step2: gene annotation with blast (Basic Local Alignment Search Tool)
 ## Step3: save gene annotation output in sqlite
