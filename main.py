@@ -150,7 +150,7 @@ if __name__ == "__main__":
     parser.add_argument("CDS_filepath", help="Filepath of target CDS, the file format need to be '.fasta' ,'.fna', or '.fsa'")
     parser.add_argument("Output_folder_name", help="Name a folder for saving all output data.")
     parser.add_argument("Output_fasta_filename", help="Name your clean cds fasta file.")
-    parser.add_argument("Output_sql_dir", help="The filepath and name of the sqlite dataset you want to save the blastp output.")
+    parser.add_argument("Output_sql_dir", help="The filepath and name of the sqlite dataset you want to save your blastp outputs.")
     
     
     args = parser.parse_args()
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     utlis_seqs.save_clean_cds_pp_fasta(clean_df, Output_fasta_filename, Output_folder_name)
     
     # step2: executing blastp
-    input_fasta = os.path.join(Output_folder_name, f"{Output_fasta_filename}_pp.fna")
+    input_fasta = os.path.join(Output_folder_name, f"{Output_fasta_filename}.faa")
     run_blastp(input_fasta, Output_folder_name)
     
     # step3: save blastp output to sql

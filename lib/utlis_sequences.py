@@ -10,14 +10,14 @@ from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 from lib.log import logger
 
-def output_fasta_file(seq_list, filename, filepath):
+def output_fasta_file(seq_list, filename, filepath, ftype="fna"):
     print(f"Writing fasta file: {filename}...")
     logger.info(f"Writing fasta file: {filename}...")
     if filepath:
         if not os.path.isdir(filepath):
             os.makedirs(filepath, exist_ok=True)
         filename = os.path.join(filepath, filename)
-    with open(f"{filename}.fna", "w+") as f:
+    with open(f"{filename}.{ftype}", "w+") as f:
         SeqIO.write(seq_list, f, "fasta")
     print("Done.")
     logger.info("Done")
@@ -25,7 +25,6 @@ def output_fasta_file(seq_list, filename, filepath):
 
 
 def save_clean_cds_pp_fasta(clean_df, fasta_name, filepath):
-    cds_fasta_name, pp_fasta_name = fasta_name+"_cds", fasta_name+"_pp"
     cds_dataset = []
     pp_dataset = []
     try:
@@ -39,7 +38,7 @@ def save_clean_cds_pp_fasta(clean_df, fasta_name, filepath):
     except Exception as e:
         raise str(e)
     try:
-        output_fasta_file(cds_dataset, cds_fasta_name, filepath)
-        output_fasta_file(pp_dataset, pp_fasta_name, filepath)
+        output_fasta_file(cds_dataset, fasta_name, filepath)
+        output_fasta_file(pp_dataset, fasta_name, filepath, ftype="faa")
     except Exception as e:
         raise str(e)
