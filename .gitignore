@@ -3,7 +3,11 @@
 .ipynb_checkpoints
 
 # Ignore unrelated folder
+GCF*/
 
 # Ingore .pyc file
 lib/__pycache__/
 __pycache__
+
+#noneed file
+log.out
