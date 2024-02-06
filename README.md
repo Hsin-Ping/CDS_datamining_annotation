@@ -12,8 +12,17 @@ The procedure includes three steps:
   <img src="images/step1.png" width=800, height=400></img>
 
 ```
-python3 main.py [-h]
+python3 main.py -h
+positional arguments:
+  CDS_filepath         Filepath of target CDS, the file format need to be '.fasta' ,'.fna', or '.fsa'.
+  Output_folder_name   Name a folder for saving all output data.
+  Output_fna_filename  Name your clean cds fasta file.
+
+options:
+  -h, --help           show this help message and exit
+  --sql_dir SQL_DIR    The filepath and name of the sqlite dataset you want to save your blastp outputs.
 ```
 
 ## Step2: gene annotation with blast (Basic Local Alignment Search Tool)
+
 ## Step3: save gene annotation output in sqlite
