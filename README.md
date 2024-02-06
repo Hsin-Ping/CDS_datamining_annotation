@@ -30,7 +30,33 @@ options:
 ## Step2: gene annotation with blast (Basic Local Alignment Search Tool)
 - preparation
   - clean amino acid fasta file (.faa file in first step)
-  - installing [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) or using [ncbi/blast](https://hub.docker.com/r/ncbi/blast/tags) docker image
-  - download the preformatted database provided by NCBI or generate customized database by blastdbcmd command in [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
-- workflow
+  - installing [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) or using install [Docker](https://www.docker.com/get-started/) and perform blastp with [ncbi/blast](https://hub.docker.com/r/ncbi/blast/tags) docker image (need to be ubuntu enviroment)
+  - download the preformatted database provided by NCBI or generate customized database by blastdbcmd command in [BLAST+ executables(https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+     - by BLAST+ executables on your local enviroment
+       ```
+       # show all preformatted database on NCBI
+       update_blastdb.pl --showall pretty
+     
+       # download the target preformatted database [db]
+       update_blastdb.pl --decompress [db name]
+       ```
+     - by docker image ncbi/blast in ubuntu environment
+       - NCBI provided an [instruction](https://github.com/ncbi/blast_plus_docs) about how to create an vm and execute blast on Google Cloud Platfrom(GCP)
+       - Note: recommend to use ncbi/blast:2.14.0 instead of ncbi/blast:2.15.0 because some bug occured when using -taxids optional argument in blastp
+       ```
+       # show all preformatted database on NCBI
+       sudo docker run --rm ncbi/blast:2.14.0 update_blastdb.pl --showall pretty
+     
+       # download the target preformatted database [db]
+       sudo docker run --rm -v [local path of saving db]:[docker path of saving db]:rw -w [docker path of saving db] ncbi/blast:2.14.0 update_blastdb.pl --source [ncbi/gcp] [db name]
+       ```
+    - settings
+      You can/should customized the **blastp** section in config.ini:
+      - using_docker: if you are going to use docker image, please assign this parameter as “1", "yes", "true", or "on"; and if you are going to use BLAST+ executables on your local environment, please assign this parameter as "0", "no", "false", and "off".
+      - db_folder: specifying the directory of the formatted database(db)
+      - db_name: the name of your database
+      - max_target_seqs: the maximum queries you want to extracts from the queries that match the criteria
+      - num_threads: how many threads you want to use to run your blast program (depends on your system, usually 4 to 32), more threads can perform blast more efficiently, relatively estimated time describled in [NCBI publication](https://www.ncbi.nlm.nih.gov/books/NBK571452/).
+      - evalue: the threshold of the evalue of blast alignment result
+      - taxids: [limiting your search by taxonomy](https://www.ncbi.nlm.nih.gov/books/NBK569846/), this could save lots of time if your database included lots of different species, and you could constraint the program only align with the species that is homologous with your reserch objective.
 ## Step3: save gene annotation output in sqlite
