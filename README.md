@@ -6,13 +6,10 @@ The procedure includes three steps:
 - gene annotation with blastp by installing [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) or using [ncbi/blast](https://hub.docker.com/r/ncbi/blast/tags) docker image by executing docker command on ubuntu system.
 - save gene annotation output in sqlite
 
-## Step1: coding sequences cleaning, structuring, and  translation
-- workflow:
-
-  <img src="images/step1.png" width=800, height=400></img>
-
 ```
 python3 main.py -h
+usage: main.py [-h] [--sql_dir SQL_DIR] CDS_filepath Output_folder_name Output_fna_filename
+
 positional arguments:
   CDS_filepath         Filepath of target CDS, the file format need to be '.fasta' ,'.fna', or '.fsa'.
   Output_folder_name   Name a folder for saving all output data.
@@ -23,6 +20,17 @@ options:
   --sql_dir SQL_DIR    The filepath and name of the sqlite dataset you want to save your blastp outputs.
 ```
 
-## Step2: gene annotation with blast (Basic Local Alignment Search Tool)
+## Step1: coding sequences cleaning, structuring, and  translation
+- preparation: your own genome dataset or download cds from target species genome in [NCBI genome dataset](https://ftp.ncbi.nlm.nih.gov/genomes/)
+- workflow:
 
+  <img src="images/step1.png" width=800, height=400></img>
+
+
+## Step2: gene annotation with blast (Basic Local Alignment Search Tool)
+- preparation
+  - clean amino acid fasta file (.faa file in first step)
+  - installing [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) or using [ncbi/blast](https://hub.docker.com/r/ncbi/blast/tags) docker image
+  - download the preformatted database provided by NCBI or generate customized database by blastdbcmd command in [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
+- workflow
 ## Step3: save gene annotation output in sqlite
