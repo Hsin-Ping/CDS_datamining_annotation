@@ -147,30 +147,34 @@ if __name__ == "__main__":
     config.reload_config()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("CDS_filepath", help="Filepath of target CDS, the file format need to be '.fasta' ,'.fna', or '.fsa'")
+    parser.add_argument("CDS_filepath", help="Filepath of target CDS, the file format need to be '.fasta' ,'.fna', or '.fsa'.")
     parser.add_argument("Output_folder_name", help="Name a folder for saving all output data.")
-    parser.add_argument("Output_fasta_filename", help="Name your clean cds fasta file.")
-    parser.add_argument("Output_sql_dir", help="The filepath and name of the sqlite dataset you want to save your blastp outputs.")
+    parser.add_argument("Output_fna_filename", help="Name your clean cds fasta file.")
+    parser.add_argument("--sql_dir", help="The filepath and name of the sqlite dataset you want to save your blastp outputs.")
     
     
     args = parser.parse_args()
     
     CDS_filepath = args.CDS_filepath
     Output_folder_name = args.Output_folder_name
-    Output_fasta_filename = args.Output_fasta_filename
-    Sql_dir = args.Output_sql_dir
+    Output_fasta_filename = args.Output_fna_filename
+    Sql_dir = args.sql_dir
     
     logger.info("=== programming initiated ...===")
     
-    # step1: cleaning cds
-    clean_df, remove_duplicates_df, isoform_df = cds_datamining(CDS_filepath, Output_folder_name) 
-    utlis_seqs.save_clean_cds_pp_fasta(clean_df, Output_fasta_filename, Output_folder_name)
+    if not Sql_dir:
+        # step1: cleaning cds
+        #clean_df, remove_duplicates_df, isoform_df = cds_datamining(CDS_filepath, Output_folder_name) 
+        #utlis_seqs.save_clean_cds_pp_fasta(clean_df, Output_fasta_filename, Output_folder_name)
     
-    # step2: executing blastp
-    input_fasta = os.path.join(Output_folder_name, f"{Output_fasta_filename}.faa")
-    run_blastp(input_fasta, Output_folder_name)
+        # step2: executing blastp
+        input_fasta = os.path.join(Output_folder_name, f"{Output_fasta_filename}.faa")
+        p = run_blastp(input_fasta, Output_folder_name)
+        
     
-    # step3: save blastp output to sql
-    #blastp_output = os.path.join(Output_folder_name, f"{Output_fasta_filename}.out")
-    #save_blastp_output(blastp_output, Sql_dir, Output_fasta_filename)
+    
+    else:
+        # step3: save blastp output to sql
+        blastp_output = os.path.join(Output_folder_name, f"{Output_fasta_filename}.out")
+        save_blastp_output(blastp_output, Sql_dir, Output_fasta_filename)
     

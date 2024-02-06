@@ -6,6 +6,7 @@ Created on Sat Jan 27 18:56:06 2024
 @author: wangxinping
 """
 import os
+import subprocess
 import time
 import pandas as pd
 import config
@@ -22,7 +23,7 @@ def run_blastp(input_fasta, output_folder):
                   f"-num_threads {config.blastp_num_threads} -evalue {config.blastp_evalue} " \
                   f"-max_target_seqs {config.blastp_max_target_seqs} " \
                   f"-outfmt '7 qacc sacc stitle pident alignment length qstart qend sstart send evalue bitscore staxids' "\
-                  f"-out {output_folder}/{input_fasta.split('/')[-1].split('faa')[0]}.out"
+                  f"-out {output_folder}/{input_fasta.split('/')[-1].split('.faa')[0]}.out"
    
         else:
             print("using docker")
@@ -35,23 +36,24 @@ def run_blastp(input_fasta, output_folder):
                   f" ncbi/blast:2.14.0 blastp" \
                   f" -db /blast/{in_docker_db_folder}/{config.blastp_db_name} -query /blast/{in_docker_output_folder}/{query_name}" \
                   f" -evalue {config.blastp_evalue} -max_target_seqs {config.blastp_max_target_seqs} -outfmt '7 qacc sacc stitle pident alignment length qstart qend sstart send evalue bitscore staxids'" \
-                  f" -num_threads {config.blastp_num_threads} -out /blast/{in_docker_output_folder}/{input_fasta.split('/')[-1].replace('faa','.out')}"
+                  f" -num_threads {config.blastp_num_threads} -out /blast/{in_docker_output_folder}/{input_fasta.split('/')[-1].replace('.faa','.out')}"
         if not config.blastp_taxids == "":
             cmd  = cmd + f" -taxids {config.blastp_taxids}"
-        if config.blastp_background:
-            cmd = cmd + " &"
     except Exception as e:
         raise str(e)
     try:
         start = time.time()
-        print(cmd)
-        os.system(cmd)
+        #print(cmd)
+        p= subprocess.Popen(cmd, shell=True)
+        time.sleep(3)
+        logger.info(f"blastp is running in the background now, pid: {p.pid}")
+        print(f"blastp is running in the background now, pid: {p.pid}")
     except Exception as e:
         logger.error(f"Errors occureed when running blastp...{str(e)}")
     finally:
         t = time.time()-start
         logger.info(f"Done. total time {t}.")
-    return None
+    return p
 
 def get_blastp_output_fields(blastp_output_filepath):
     with open(blastp_output_filepath) as f:
