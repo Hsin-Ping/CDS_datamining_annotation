@@ -164,8 +164,8 @@ if __name__ == "__main__":
     
     if not Sql_dir:
         # step1: cleaning cds
-        #clean_df, remove_duplicates_df, isoform_df = cds_datamining(CDS_filepath, Output_folder_name) 
-        #utlis_seqs.save_clean_cds_pp_fasta(clean_df, Output_fasta_filename, Output_folder_name)
+        clean_df, remove_duplicates_df, isoform_df = cds_datamining(CDS_filepath, Output_folder_name) 
+        utlis_seqs.save_clean_cds_pp_fasta(clean_df, Output_fasta_filename, Output_folder_name)
     
         # step2: executing blastp
         input_fasta = os.path.join(Output_folder_name, f"{Output_fasta_filename}.faa")
