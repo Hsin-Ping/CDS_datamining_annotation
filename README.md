@@ -60,3 +60,12 @@ options:
       - evalue: the threshold of the evalue of blast alignment result
       - taxids: [limiting your search by taxonomy](https://www.ncbi.nlm.nih.gov/books/NBK569846/), this could save lots of time if your database included lots of different species, and you could constraint the program only align with the species that is homologous with your reserch objective.
 ## Step3: save gene annotation output in sqlite
+## How to use this package
+- Executing step1 & step2 first, then add --sql_dir optional argument to execute step 3 and save blastp result in sqlite
+  ```
+       # Executing main.py without --sql_dir optional argument to perform step1 and step2
+       python3 main.py [CDS_filepath] [Output_folder_name] [Output_fna_filename]
+     
+       # Executing main.py again with --sql_dir optional argument to perform step3 to save blastp result in sqlite
+       python3 main.py [CDS_filepath] [Output_folder_name] [Output_fna_filename] --sql_dir [sql_name]
+  ```
