@@ -22,13 +22,13 @@ options:
 
 ## Step1: coding sequences cleaning, structuring, and  translation
 - preparation: your own genome dataset or download cds from target species genome in [NCBI genome dataset](https://ftp.ncbi.nlm.nih.gov/genomes/)
-- workflow:
+- workflow
 
   <img src="images/step1.png" width=800, height=400></img>
 
 
 ## Step2: gene annotation with blast (Basic Local Alignment Search Tool)
-- preparation
+### preparation
   - clean amino acid fasta file (.faa file in first step)
   - installing [BLAST+ executables](https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/) or using install [Docker](https://www.docker.com/get-started/) and perform blastp with [ncbi/blast](https://hub.docker.com/r/ncbi/blast/tags) docker image (need to be ubuntu enviroment)
   - download the preformatted database provided by NCBI or generate customized database by blastdbcmd command in [BLAST+ executables(https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/)
