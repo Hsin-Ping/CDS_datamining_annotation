@@ -20,6 +20,13 @@ blastp_num_threads = None
 blastp_evalue = None
 blastp_background = None
 blastp_taxids = ""
+blastp_remote = None
+
+docker_server_ip = ""
+docker_server_username = ""
+docker_server_password = ""
+docker_server_port = ""
+docker_server_key_file = ""
 
 def get_version():
     return version
@@ -36,12 +43,12 @@ def check_config_section():
         
     if not config.has_section('blastp'): 
         config.add_section('blastp')
-            
 
     config.write(open(config_file, 'w'))
 
 def get_config():
-    global version, blastp_using_docker, blastp_db_folder, blastp_db_name, blastp_max_target_seqs, blastp_num_threads, blastp_evalue, blastp_background, blastp_taxids
+    global version, blastp_using_docker, blastp_db_folder, blastp_db_name, blastp_max_target_seqs, blastp_num_threads, blastp_evalue, blastp_background, blastp_taxids, \
+        blastp_remote, docker_server_ip, docker_server_username, docker_server_password, docker_server_port, docker_server_key_file
         
 
     try:
@@ -97,6 +104,42 @@ def get_config():
     except Exception as e:
         logger.warning(e)
         blastp_taxids = ""
+        
+    try:
+        blastp_remote = config.get('blastp', 'remote')
+    except Exception as e:
+        logger.warning(e)
+        blastp_remote = ""
+        
+    try:
+        docker_server_ip = config.get('docker_server', 'ip')
+    except Exception as e:
+        logger.warning(e)
+        docker_server_ip = ""
+        
+    try:
+        docker_server_username = config.get('docker_server', 'username')
+    except Exception as e:
+        logger.warning(e)
+        docker_server_username = ""
+        
+    try:
+        docker_server_password = config.get('docker_server', 'password')
+    except Exception as e:
+        logger.warning(e)
+        docker_server_password = ""
+        
+    try:
+        docker_server_port = config.get('docker_server', 'port')
+    except Exception as e:
+        logger.warning(e)
+        docker_server_port = ""
+
+    try:
+        docker_server_key_file = config.get('docker_server', 'key_file')
+    except Exception as e:
+        logger.warning(e)
+        docker_server_key_file = ""
         
 def reload_config():
     check_config_section()
